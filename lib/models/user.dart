@@ -1,26 +1,32 @@
 class User {
-  int? id;
+  String id = "";
   String userName = "";
   String displayName = "";
   String password = "";
   String? email;
   String? phone;
 
-  User(
-      {this.id,
-      required this.userName,
-      required this.displayName,
-      required this.password,
-      this.email,
-      this.phone});
+  User(id,
+      userName,
+      displayName,
+      password,
+      email,
+      phone);
+
+  static User empty = User("","","","","","");
 
   User.map(dynamic obj) {
-    this.id = obj['id'];
-    this.userName = obj['userName'];
-    this.displayName = obj['displayName'];
-    this.password = obj['password'];
-    this.email = obj['email'];
-    this.phone = obj['phone'];
+    if(obj != null){
+      id = obj['id'];
+      userName = obj['userName'];
+      displayName = obj['displayName'];
+      password = obj['password'];
+      email = obj['email'];
+      phone = obj['phone'];
+    }
+    else {
+      User.empty;
+    }
   }
 
   Map<String, dynamic> toMap() {
@@ -36,12 +42,12 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> map) {
     return User(
-      id: map['id'],
-      userName: map['userName'],
-      displayName: map['displayName'],
-      password: map['password'],
-      email: map['email'],
-      phone: map['phone'],
+      map['id'],
+      map['userName'],
+      map['displayName'],
+      map['password'],
+      map['email'],
+      map['phone'],
     );
   }
 }

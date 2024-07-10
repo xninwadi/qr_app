@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_app/widgets/login.dart';
+import 'package:qr_app/widgets/qr_appbar.dart';
 import 'package:qr_app/widgets/signup.dart';
 
 class welcomepage extends StatelessWidget {
@@ -9,9 +10,7 @@ class welcomepage extends StatelessWidget {
   @override
   Widget build(context) {    
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("QR Service", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
-        backgroundColor: Colors.black,),
+      appBar: buildReusableAppBar(),
       body: Container(
         color: const Color.fromARGB(255, 117, 195, 219),
         child: Center(

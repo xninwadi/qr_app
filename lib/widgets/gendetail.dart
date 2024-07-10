@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qr_app/models/myqrcode.dart';
 import 'package:qr_app/widgets/history.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 //void main() => runApp(const GetMaterialApp(home: gendetailPage()));
 
 class gendetailPage extends StatelessWidget {
-  final TextEditingController controller;
-  const gendetailPage(this.controller, {super.key});
+  
+  MyQRCode qrCode = MyQRCode.empty;
+
+  gendetailPage(_qrCode, {super.key}) {
+    qrCode = _qrCode;
+  }
 
   @override
   Widget build(context) {
@@ -30,9 +35,9 @@ class gendetailPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 100.0),
-              if (controller.text.isNotEmpty)
+              if (qrCode.content.isNotEmpty)
               QrImageView(
-                  data: controller.text,
+                  data: qrCode.content,
                   version: QrVersions.auto,
                   size: 300,
                   backgroundColor: Colors.white,

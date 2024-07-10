@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:qr_app/main.dart';
 import 'package:qr_app/widgets/generate.dart';
 import 'package:qr_app/widgets/history.dart';
+import 'package:qr_app/widgets/qr_appbar.dart';
 import 'package:qr_app/widgets/scan.dart';
 
 void main() => runApp(const GetMaterialApp(home: homePage()));
@@ -15,9 +16,7 @@ class homePage extends StatelessWidget {
     final RxBool isFavoriteChecked = false.obs;
     return Scaffold(
       drawer: NavBar(),
-      appBar: AppBar(
-        title: const Text("QR Service", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
-        backgroundColor: Colors.black,),
+      appBar: buildReusableAppBar(),
       body: Container(
         color: const Color.fromARGB(255, 117, 195, 219),
         child: Center(

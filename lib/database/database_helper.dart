@@ -1,7 +1,11 @@
 // Helper class for managing SQLite database operations
+import 'package:qr_app/models/favorite.dart';
+import 'package:qr_app/models/myqrcode.dart';
+import 'package:qr_app/models/scanhistory.dart';
 import 'package:qr_app/models/user.dart';
 import 'package:sqflite/sqflite.dart'; // Import sqflite package
-import 'package:path/path.dart';// Import path package
+import 'package:path/path.dart';
+import 'package:uuid/uuid.dart';// Import path package
 
 class DatabaseHelper {
   static final DatabaseHelper _instance =
@@ -25,12 +29,20 @@ class DatabaseHelper {
 
   // Initialize the database
   Future<Database> _initDatabase() async {
-    String path =
-        join(await getDatabasesPath(), 'qrApp.db'); // Get database path
+    String path = join(await getDatabasesPath(), 'qrApp.db'); // Get database path
     print("Database path: $path"); // Debug: Print database path
     return await openDatabase(path, version: 1, onCreate: (db, version) async {
       await db.execute(
-        "CREATE TABLE users(id INTEGER PRIMARY KEY AUTOINCREMENT, userName TEXT, displayName TEXT, password TEXT, email TEXT, phone TEXT);", // Create tasks table
+        "CREATE TABLE users(id TEXT PRIMARY KEY, userName TEXT, displayName TEXT, password TEXT, email TEXT, phone TEXT);",
+      );
+      await db.execute(
+        "CREATE TABLE qrcodes(id TEXT PRIMARY KEY, content TEXT, content_type TEXT, generate_date TEXT);",
+      );
+      await db.execute(
+        "CREATE TABLE favorites(id TEXT PRIMARY KEY, user_id TEXT, qr_id TEXT);",
+      );
+      await db.execute(
+        "CREATE TABLE histories(id TEXT PRIMARY KEY, user_id TEXT, qr_id TEXT, scan_date TEXT);", 
       );
     });
   }
@@ -38,6 +50,7 @@ class DatabaseHelper {
   // start User
   Future<void> insertUser(User user) async {
     final db = await database;
+    user.id = Uuid().v4();
     await db.insert(
       'users',
       user.toMap(),
@@ -74,36 +87,32 @@ class DatabaseHelper {
   }
   // end User
 
-  // Insert a task into the database
-  Future<void> insertTask(String task) async {
-    final db = await database; // Get database instance
+  // 
+  Future<dynamic> insertQR(MyQRCode qr) async {
+    final db = await database;
     await db.insert(
-      'tasks',
-      {'task': task},
-      conflictAlgorithm:
-          ConflictAlgorithm.replace, // Conflict resolution strategy
+      'qrcodes',
+      qr.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace, // Conflict resolution strategy
     );
-    print("Inserted task: $task"); // Debug: Print inserted task
   }
 
-  // Get all tasks from the database
-  Future<List<Map<String, dynamic>>> getTasks() async {
-    final db = await database; // Get database instance
-    final List<Map<String, dynamic>> tasks =
-        await db.query('tasks'); // Query tasks table
-    print("Retrieved tasks: $tasks"); // Debug: Print retrieved tasks
-    return tasks; // Return retrieved tasks
-  }
-
-  // Delete a task from the database
-  Future<void> deleteTask(int id) async {
-    final db = await database; // Get database instance
-    await db.delete(
-      'tasks',
-      where: 'id = ?',
-      whereArgs: [id],
+  Future<void> insertFavorite(Favorite fav) async {
+    final db = await database;
+    await db.insert(
+      'favorites',
+      fav.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace, // Conflict resolution strategy
     );
-    print("Deleted task with id: $id"); // Debug: Print deleted task ID
+  }
+  
+  Future<void> insertHistory(History hty) async {
+    final db = await database;
+    await db.insert(
+      'histories',
+      hty.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace, // Conflict resolution strategy
+    );
   }
 }
 

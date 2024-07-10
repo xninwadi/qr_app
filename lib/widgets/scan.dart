@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qr_app/widgets/qr_appbar.dart';
 import 'package:qr_app/widgets/scandetail.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -36,10 +37,7 @@ class _ScannerPage extends State<ScannerPage> {
     final QRScannerController controller = Get.put(QRScannerController());
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("QR Service", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
-        backgroundColor: Colors.black,
-      ),
+      appBar: buildReusableAppBar(),
       body: Container(
         color: const Color.fromARGB(255, 117, 195, 219),
         child: Column(

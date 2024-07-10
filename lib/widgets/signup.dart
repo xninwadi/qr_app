@@ -3,34 +3,13 @@ import 'package:get/get.dart';
 import 'package:qr_app/controller/singup_controller.dart';
 import 'package:qr_app/models/user.dart';
 import 'package:qr_app/widgets/login.dart';
+import 'package:qr_app/widgets/qr_appbar.dart';
 import 'package:qr_app/widgets/welcome.dart';
 
-/*void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      home: SignUpPage(),
-    );
-  }
-}*/
 
 class SignUpPage extends StatelessWidget {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _displayNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _CpasswordController = TextEditingController();
-
-
   final SingupController controller = Get.put(SingupController());
-  User user = User(userName: '', displayName: '', password: '');
+  User user = User.empty;
   
   User mapToUser(
       TextEditingController name,
@@ -38,12 +17,7 @@ class SignUpPage extends StatelessWidget {
       TextEditingController pass,
       TextEditingController email,
       TextEditingController phone) {
-    return User(
-        userName: name.text,
-        displayName: dispName.text,
-        password: pass.text,
-        email: email.text,
-        phone: phone.text);
+    return User("",name.text, dispName.text, pass.text, email.text, phone.text);
   }
 
   SignUpPage({super.key});
@@ -52,9 +26,7 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("QR Service", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
-        backgroundColor: Colors.black,),
+      appBar: buildReusableAppBar(),
       body: Container(
         color: const Color.fromARGB(255, 117, 195, 219),
         padding: const EdgeInsets.all(20.0),
@@ -64,7 +36,7 @@ class SignUpPage extends StatelessWidget {
             const Text('Create your account', style: TextStyle(fontSize: 20.0 , fontWeight: FontWeight.bold),),
             const SizedBox(height: 50.0),
             TextField(
-              controller: _usernameController,
+              controller: controller.usernameController,
               decoration: const InputDecoration(
                 labelText: 'Username',
                 border: OutlineInputBorder(),
@@ -73,7 +45,7 @@ class SignUpPage extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             TextField(
-              controller: _displayNameController,
+              controller: controller.displayNameController,
               decoration: const InputDecoration(
                 labelText: 'Display Name',
                 border: OutlineInputBorder(),
@@ -82,7 +54,7 @@ class SignUpPage extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             TextField(
-              controller: _emailController,
+              controller: controller.emailController,
               decoration: const InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(),
@@ -91,7 +63,7 @@ class SignUpPage extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             TextField(
-              controller: _phoneController,
+              controller: controller.phoneController,
               decoration: const InputDecoration(
                 labelText: 'Phone',
                 border: OutlineInputBorder(),
@@ -100,7 +72,7 @@ class SignUpPage extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             TextField(
-              controller: _passwordController,
+              controller: controller.passwordController,
               obscureText: true,
               decoration: const InputDecoration(
                 labelText: 'Password',
@@ -110,7 +82,7 @@ class SignUpPage extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             TextField(
-              controller: _CpasswordController,
+              controller: controller.CpasswordController,
               obscureText: true,
               decoration: const InputDecoration(
                 labelText: 'Confirm Password',
@@ -122,8 +94,7 @@ class SignUpPage extends StatelessWidget {
             ElevatedButton(
               //onPressed: () => Get.to(const homePage()),
               onPressed: () {
-                controller.register(mapToUser(_usernameController, _displayNameController,
-                    _passwordController, _emailController, _phoneController));
+                controller.register();
                 Get.to(LoginPage());
               },
               child: const Text('Sign Up', style: TextStyle(color: Colors.black),),

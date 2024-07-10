@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_app/widgets/contact.dart';
 import 'package:qr_app/widgets/home.dart';
+import 'package:qr_app/widgets/qr_appbar.dart';
 import 'package:qr_app/widgets/text.dart';
 import 'package:qr_app/widgets/url.dart';
 import 'package:qr_app/widgets/vcard.dart';
@@ -16,10 +17,7 @@ class generatePage extends StatelessWidget {
   Widget build(context) {    
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("QR Service", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
-        backgroundColor: Colors.black,
-      ),
+      appBar: buildReusableAppBar(),
       body: Container(
         color: const Color.fromARGB(255, 117, 195, 219),
         child: Column(

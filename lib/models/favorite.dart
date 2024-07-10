@@ -1,8 +1,21 @@
-class User{
-  int? _favID;
-  int? _userID;
-  int? _qrID;
+class Favorite{
+  String id  = "";
+  String userId = "";
+  String qrId = "";
 
-  User(this._favID, this._userID, this._qrID);
+  Favorite(this.id, this.userId, this.qrId);
 
+  Favorite.map(dynamic obj){
+    id = obj['id'];
+    userId = obj['user_id'];
+    qrId = obj['qr_id'];
+  }
+
+  Map<String, dynamic> toMap(){
+    var map = new Map<String, dynamic>();
+    map['id'] = id;
+    map['user_id'] = userId;
+    map['qr_id'] = qrId;
+    return map;
+  }
 }
